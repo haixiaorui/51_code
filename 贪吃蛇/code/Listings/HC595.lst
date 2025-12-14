@@ -1,0 +1,55 @@
+C51 COMPILER V9.54   HC595                                                                 11/28/2025 10:35:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE HC595
+OBJECT MODULE PLACED IN .\Objects\HC595.obj
+COMPILER INVOKED BY: E:\Keil_v5\C51\BIN\C51.EXE HC595.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\HC5
+                    -95.lst) OBJECT(.\Objects\HC595.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.H"
+   3          #include "INTRINS.H"
+   4          sbit SER=P3^4;
+   5          sbit SCK=P3^6;
+   6          sbit RCK=P3^5;
+   7          void _74HC595(unsigned char Byte)
+   8          {       
+   9   1              unsigned char i;
+  10   1              SCK=0;
+  11   1              RCK=0;
+  12   1              for(i=0;i<8;i++)
+  13   1              {
+  14   2                      SER=Byte&(0x80>>i);
+  15   2                      SCK=1;
+  16   2                      _nop_();
+  17   2                      _nop_();
+  18   2                      SCK=0;
+  19   2              }
+  20   1              RCK=1;
+  21   1              _nop_();
+  22   1              _nop_();
+  23   1              RCK=0;
+  24   1      }
+  25          void MatrixLed(unsigned char Column,Date)//Column是行，Date是列。
+  26          {
+  27   1              _74HC595(Date);
+  28   1              P0=(Column);
+  29   1              Delay(1);
+  30   1              P0=0xff;
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     73    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

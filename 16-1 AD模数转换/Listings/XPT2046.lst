@@ -1,0 +1,55 @@
+C51 COMPILER V9.54   XPT2046                                                               12/11/2025 10:20:49 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE XPT2046
+OBJECT MODULE PLACED IN .\Objects\XPT2046.obj
+COMPILER INVOKED BY: E:\Keil_v5\C51\BIN\C51.EXE XPT2046.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\X
+                    -PT2046.lst) OBJECT(.\Objects\XPT2046.obj)
+
+line level    source
+
+   1          #include <STC89C5xRC.H>
+   2          #include "Delay.h"
+   3          
+   4          sbit XPT2046_CS = P3^5;
+   5          sbit XPT2046_DCLK = P3^6;
+   6          sbit XPT2046_DIN = P3^4;
+   7          sbit XPT2046_DOUT = P3^7;
+   8          
+   9          unsigned int XPT2046_ReadAD(unsigned char command)
+  10          {
+  11   1              unsigned char i;
+  12   1              unsigned int ADvalue;
+  13   1              XPT2046_CS = 0;
+  14   1              XPT2046_DCLK = 0;
+  15   1              for(i = 0; i < 8; i++)
+  16   1              {
+  17   2                      XPT2046_DIN = command & (0x80 >> i);
+  18   2                      XPT2046_DCLK = 1;
+  19   2                      Delayms(1);
+  20   2                      XPT2046_DCLK = 0;
+  21   2              }
+  22   1              for(i = 0; i < 16; i++)
+  23   1              {
+  24   2                      XPT2046_DCLK = 1;
+  25   2                      Delayms(1);
+  26   2                      XPT2046_DCLK = 0;
+  27   2                      if(XPT2046_DOUT) ADvalue |= (0x8000 >> i);
+  28   2              }
+  29   1              if(command & 0x08) return ADvalue >> 8;
+  30   1              else return ADvalue >> 4;
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    128    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,222 @@
+C51 COMPILER V9.54   SNAKE                                                                 12/12/2025 15:53:48 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SNAKE
+OBJECT MODULE PLACED IN .\Objects\snake.obj
+COMPILER INVOKED BY: E:\Keil_v5\C51\BIN\C51.EXE snake.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\sna
+                    -ke.lst) OBJECT(.\Objects\snake.obj)
+
+line level    source
+
+   1          #include <stdlib.h>
+   2          #include <STC89C5xRC.H>
+   3          #include "MatrixLED.h"
+   4          #include "IR.h"
+   5          
+   6          unsigned char snakeX[40] = {1};
+   7          unsigned char snakeY[40] = {1};
+   8          
+   9          unsigned char snake_size, snake_dir, KeyNum, foodX, foodY;
+  10          unsigned char game_run, snake_die, snake_eat_buzzer, snake_die_buzzer;
+  11          
+  12          void FoodCreate();
+  13          
+  14          void GameInit()
+  15          {
+  16   1              snake_size = 2;
+  17   1              snake_dir = 2;
+  18   1              snakeX[0] = 1;
+  19   1              snakeY[0] = 1;
+  20   1              FoodCreate();
+  21   1              game_run = 1;
+  22   1      }
+  23          
+  24          void SnakeLedShow(unsigned char x, unsigned char y)
+  25          {
+  26   1              switch(x)
+  27   1              {
+  28   2                      case 1:
+  29   2                              MatrixLED_ShowColumn(y-1, 0x80);
+  30   2                              break;
+  31   2                      case 2:
+  32   2                              MatrixLED_ShowColumn(y-1, 0x40);
+  33   2                              break;
+  34   2                      case 3:
+  35   2                              MatrixLED_ShowColumn(y-1, 0x20);
+  36   2                              break;
+  37   2                      case 4:
+  38   2                              MatrixLED_ShowColumn(y-1, 0x10);
+  39   2                              break;
+  40   2                      case 5:
+  41   2                              MatrixLED_ShowColumn(y-1, 0x08);
+  42   2                              break;
+  43   2                      case 6:
+  44   2                              MatrixLED_ShowColumn(y-1, 0x04);
+  45   2                              break;
+  46   2                      case 7:
+  47   2                              MatrixLED_ShowColumn(y-1, 0x02);
+  48   2                              break;
+  49   2                      case 8:
+  50   2                              MatrixLED_ShowColumn(y-1, 0x01);
+  51   2                              break;
+  52   2              }
+  53   1      }
+  54          
+C51 COMPILER V9.54   SNAKE                                                                 12/12/2025 15:53:48 PAGE 2   
+
+  55          void PlayDraw()
+  56          {
+  57   1              unsigned char i;
+  58   1              for(i = 0; i < snake_size; i++) {
+  59   2                      SnakeLedShow(snakeX[i], snakeY[i]);
+  60   2              }
+  61   1              SnakeLedShow(foodX, foodY);
+  62   1      }
+  63          
+  64          void SnakeMove()
+  65          {
+  66   1              unsigned char i;
+  67   1              // 0 1 2 3 上 右 下 左
+  68   1              for(i = snake_size-1; i > 0; i--) {
+  69   2                      snakeX[i] = snakeX[i-1];
+  70   2                      snakeY[i] = snakeY[i-1];
+  71   2              }
+  72   1              switch(snake_dir)
+  73   1              {
+  74   2                      case 0:
+  75   2                              snakeX[0]--;
+  76   2                              if(snakeX[0] < 1) snakeX[0] = 8;
+  77   2                              break;
+  78   2                      case 1:
+  79   2                              snakeY[0]++;
+  80   2                              if(snakeY[0] > 8) snakeY[0] = 1;
+  81   2                              break;
+  82   2                      case 2:
+  83   2                              snakeX[0]++;
+  84   2                              if(snakeX[0] > 8) snakeX[0] = 1;
+  85   2                              break;
+  86   2                      case 3:
+  87   2                              snakeY[0]--;
+  88   2                              if(snakeY[0] < 1) snakeY[0] = 8;
+  89   2                              break;
+  90   2              }
+  91   1      }
+  92          
+  93          unsigned char command;
+  94          
+  95          unsigned char Key()
+  96          {
+  97   1              unsigned char key = 0;
+  98   1              if(IR_GetDataFlag())
+  99   1              {
+ 100   2                      command = IR_GetCommand();
+ 101   2                      if(command == IR_2)     key = 1;
+ 102   2                      if(command == IR_8)     key = 2;
+ 103   2                      if(command == IR_4)     key = 3;
+ 104   2                      if(command == IR_6)     key = 4;
+ 105   2                      if(command == IR_5)     key = 5;
+ 106   2                      if(command == IR_POWER) key = 6;
+ 107   2              }
+ 108   1              return key;
+ 109   1      }
+ 110          
+ 111          void ScanKey()
+ 112          {
+ 113   1              if(KeyNum)
+ 114   1              {
+ 115   2                      switch(KeyNum)
+ 116   2                      {
+C51 COMPILER V9.54   SNAKE                                                                 12/12/2025 15:53:48 PAGE 3   
+
+ 117   3                              case 1:
+ 118   3                                      if(snake_dir != 2) snake_dir = 0;
+ 119   3                                      break;
+ 120   3                              case 2:
+ 121   3                                      if(snake_dir != 0) snake_dir = 2;
+ 122   3                                      break;
+ 123   3                              case 3:
+ 124   3                                      if(snake_dir != 1) snake_dir = 3;
+ 125   3                                      break;
+ 126   3                              case 4:
+ 127   3                                      if(snake_dir != 3) snake_dir = 1;
+ 128   3                                      break;
+ 129   3                              case 5:
+ 130   3                                      game_run = !game_run;
+ 131   3                                      break;
+ 132   3                              case 6:
+ 133   3                                      if(snake_die)
+ 134   3                                      {
+ 135   4                                              GameInit();
+ 136   4                                              snake_die = 0;
+ 137   4                                      }
+ 138   3                                      break;
+ 139   3                      }
+ 140   2              }
+ 141   1      }
+ 142          
+ 143          void SnakeDieKey()
+ 144          {
+ 145   1              KeyNum = Key();
+ 146   1              ScanKey();
+ 147   1      }
+ 148          
+ 149          void FoodCreate()
+ 150          {
+ 151   1              foodX = ((rand()+snakeX[snake_size-1])%8)+1;
+ 152   1              foodY = ((rand()+snakeY[snake_size-1])%8)+1;
+ 153   1      }
+ 154          
+ 155          void EatFood()
+ 156          {
+ 157   1              if(snakeX[0] == foodX && snakeY[0] == foodY)
+ 158   1              {
+ 159   2                      snake_size++;
+ 160   2                      FoodCreate();
+ 161   2                      snake_eat_buzzer = 1;
+ 162   2              }
+ 163   1      }
+ 164          
+ 165          void SnakeDie()
+ 166          {
+ 167   1              unsigned char i;
+ 168   1              for(i = 4; i < snake_size; i++) {
+ 169   2                      if(snakeX[0] == snakeX[i] && snakeY[0] == snakeY[i]) {
+ 170   3                              snake_die_buzzer = 1;
+ 171   3                              P0 = 0xff;
+ 172   3                              snake_die = 1;
+ 173   3                      }
+ 174   2              }
+ 175   1      }
+ 176          
+ 177          
+ 178          void PlayGame()
+C51 COMPILER V9.54   SNAKE                                                                 12/12/2025 15:53:48 PAGE 4   
+
+ 179          {
+ 180   1              unsigned char i;
+ 181   1              rand();
+ 182   1              ScanKey();
+ 183   1              PlayDraw();
+ 184   1              SnakeDie();
+ 185   1              EatFood();
+ 186   1              KeyNum = Key();
+ 187   1              for(i = 0; i < snake_size; i++) {
+ 188   2                      if(foodX == snakeX[i] && foodY == snakeY[i]) {
+ 189   3                              FoodCreate();
+ 190   3                      }
+ 191   2              }
+ 192   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    596    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     90       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,1 @@
+"OneWireDelay.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\OneWireDelay.lst) OBJECT(.\Objects\OneWireDelay.obj)

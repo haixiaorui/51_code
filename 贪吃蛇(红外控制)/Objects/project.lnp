@@ -1,0 +1,11 @@
+".\Objects\main.obj",
+".\Objects\snake.obj",
+".\Objects\Delay.obj",
+".\Objects\MatrixLED.obj",
+".\Objects\Timer1.obj",
+".\Objects\Int0.obj",
+".\Objects\IR.obj",
+".\Objects\Timer0.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

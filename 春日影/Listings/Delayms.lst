@@ -1,0 +1,36 @@
+C51 COMPILER V9.54   DELAYMS                                                               11/29/2025 11:10:52 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE DELAYMS
+OBJECT MODULE PLACED IN .\Objects\Delayms.obj
+COMPILER INVOKED BY: E:\Keil_v5\C51\BIN\C51.EXE Delayms.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\D
+                    -elayms.lst) OBJECT(.\Objects\Delayms.obj)
+
+line level    source
+
+   1          void Delayms(unsigned int xms)  //@11.0592MHz
+   2          {
+   3   1              unsigned char data i, j;
+   4   1              while(xms--){
+   5   2                      i = 2;
+   6   2                      j = 199;
+   7   2                      do
+   8   2                      {
+   9   3                              while (--j);
+  10   3                      } while (--i);
+  11   2              }
+  12   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     21    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

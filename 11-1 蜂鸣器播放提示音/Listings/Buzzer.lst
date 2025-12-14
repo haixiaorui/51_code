@@ -1,0 +1,49 @@
+C51 COMPILER V9.54   BUZZER                                                                11/29/2025 10:22:57 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE BUZZER
+OBJECT MODULE PLACED IN .\Objects\Buzzer.obj
+COMPILER INVOKED BY: E:\Keil_v5\C51\BIN\C51.EXE Buzzer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Bu
+                    -zzer.lst) OBJECT(.\Objects\Buzzer.obj)
+
+line level    source
+
+   1          #include <STC89C5xRC.H>
+   2          #include <INTRINS.H>
+   3          #include "Delay.h"
+   4          
+   5          sbit buzzer = P2^5;
+   6          
+   7          void Buzzer_Delay500us(void)    //@11.0592MHz
+   8          {
+   9   1              unsigned char data i;
+  10   1      
+  11   1              _nop_();
+  12   1              i = 227;
+  13   1              while (--i);
+  14   1      }
+  15          
+  16          
+  17          void BuzzerTime(unsigned int ms)
+  18          {
+  19   1              unsigned int i;
+  20   1              for(i = 0; i < ms*2; i++)
+  21   1              {
+  22   2                      buzzer = !buzzer;
+  23   2                      Buzzer_Delay500us();
+  24   2              }
+  25   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
